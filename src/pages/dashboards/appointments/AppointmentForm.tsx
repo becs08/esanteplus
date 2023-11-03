@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-
-import { Button, Input } from 'antd';
-
+import { Button, DatePicker, TimePicker, Input, Form, DatePickerProps } from 'antd';
 import { useFormik } from 'formik';
+import dayjs from 'dayjs';
 import * as Yup from 'yup';
-
 import ImageLoader from '../../../layout/components/patients/ImageLoader';
 import { hasErrorFactory } from '../../../utils/hasError';
-
 import { IAppointment } from '../../../interfaces/patient';
 
 type Props = {
@@ -19,10 +16,9 @@ type Props = {
 
 const defaultSubmitText = 'Add Appointment';
 const emptyAppointment = {
-  date: '',
+  date: null,
   doctor: '',
   email: '',
-  fromTo: '',
   img: '',
   injury: '',
   name: '',
@@ -33,7 +29,6 @@ const emptyAppointment = {
 
 const appointmentSchema = Yup.object().shape({
   date: Yup.string().required(),
-  doctor: Yup.string().required(),
   email: Yup.string().required(),
   injury: Yup.string().required(),
   name: Yup.string().required(),
@@ -57,20 +52,20 @@ const AppointmentForm = ({
     isValid,
     errors,
     touched,
-    resetForm
+    resetForm,
+    setFieldValue
   } = useFormik<IAppointment>({
     validationSchema: appointmentSchema,
     initialValues: appointment,
     onSubmit: (form) => {
-      onSubmit({ ...form, fromTo: `${form.from} - ${form.to}`, img });
+      onSubmit({ ...form, img });
       resetForm();
     }
   });
-  const [from, to] = values.fromTo.split('-');
   const [img, setImg] = useState(values.img);
 
   useEffect(() => {
-    setValues({ ...values, from, to });
+    setValues({ ...values });
   }, [appointment]);
 
   const handleImageLoad = (image) => {
@@ -82,27 +77,31 @@ const AppointmentForm = ({
     onCancel();
   };
 
+  const onDateChange: DatePickerProps['onChange'] = (date) => {
+    setFieldValue('date', date ? date.toISOString() : null);
+  };
+
   const hasError = hasErrorFactory(touched, errors);
+
+  const timeFormat = 'HH:mm';
 
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className='form-group'>
-          <ImageLoader onLoad={handleImageLoad} src={img} />
-        </div>
+        
 
-        <div className='form-group'>
+        <Form.Item>
           <Input
             name='name'
-            placeholder='Name'
+            placeholder='Nom'
             onBlur={handleBlur}
             onChange={handleChange}
             defaultValue={values.name}
             className={hasError('name')}
           />
-        </div>
+        </Form.Item>
 
-        <div className='form-group'>
+        <Form.Item>
           <Input
             defaultValue={values.doctor}
             placeholder='Doctor'
@@ -111,9 +110,9 @@ const AppointmentForm = ({
             onChange={handleChange}
             className={hasError('doctor')}
           />
-        </div>
+        </Form.Item>
 
-        <div className='form-group'>
+        <Form.Item>
           <Input
             defaultValue={values.email}
             placeholder='Email'
@@ -123,48 +122,47 @@ const AppointmentForm = ({
             onChange={handleChange}
             className={hasError('email')}
           />
-        </div>
+        </Form.Item>
 
-        <div className='form-group'>
-          <Input
-            defaultValue={values.date}
+        <Form.Item className='form-group'>
+          <DatePicker
+            defaultValue={values.date ? dayjs(values.date) : null}
             placeholder='Date'
             name='date'
-            onChange={handleChange}
-            onBlur={handleBlur}
+            onChange={onDateChange}
             className={hasError('date')}
           />
-        </div>
+        </Form.Item>
 
         <div className='row'>
           <div className='col-sm-12 col-md-6'>
-            <div className='form-group'>
-              <Input
-                name='from'
+            <Form.Item>
+              <TimePicker
+                defaultValue={values.from ? dayjs(values.from, timeFormat) : null}
                 placeholder='From'
-                defaultValue={from}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                name='from'
+                format={timeFormat}
+                onChange={(date, time) => setFieldValue('from', time ? time : null)}
                 className={hasError('from')}
               />
-            </div>
+            </Form.Item>
           </div>
 
           <div className='col-sm-12 col-md-6'>
-            <div className='form-group'>
-              <Input
-                name='to'
+            <Form.Item>
+              <TimePicker
+                defaultValue={values.to ? dayjs(values.to, timeFormat) : null}
                 placeholder='To'
-                defaultValue={to}
-                onChange={handleChange}
-                onBlur={handleBlur}
+                name='to'
+                format={timeFormat}
+                onChange={(date, time) => setFieldValue('to', time ? time : null)}
                 className={hasError('to')}
               />
-            </div>
+            </Form.Item>
           </div>
         </div>
 
-        <div className='form-group'>
+        <Form.Item>
           <Input
             type='phone'
             name='number'
@@ -174,9 +172,9 @@ const AppointmentForm = ({
             defaultValue={values.number}
             className={hasError('number')}
           />
-        </div>
+        </Form.Item>
 
-        <div className='form-group'>
+        <Form.Item>
           <Input
             name='injury'
             placeholder='Injury'
@@ -185,7 +183,7 @@ const AppointmentForm = ({
             onBlur={handleBlur}
             className={hasError('injury')}
           />
-        </div>
+        </Form.Item>
 
         <div className='d-flex justify-content-between buttons-list settings-actions'>
           <Button danger onClick={handleCancel}>

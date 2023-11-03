@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import { Button } from 'antd';
 import { HomeFilled } from '@ant-design/icons/lib';
 
 import BaseErrorPage from './BaseErrorPage';
-import { useNavigateHome } from '../../utils/use-navigate-home';
+import { useNavigate } from 'react-router-dom';
+
+
 
 const InternalError = () => {
   const navigateHome = useNavigateHome();
+
+  function useNavigateHome() {
+    const navigate = useNavigate();
+  
+    return useCallback(() => navigate('/'), []);
+  }
 
   return (
     <BaseErrorPage

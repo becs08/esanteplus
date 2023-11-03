@@ -12,16 +12,16 @@ import { IPageData } from '../../interfaces/page';
 import { IPatient } from '../../interfaces/patient';
 
 const pageData: IPageData = {
-  title: 'Edit account',
+  title: 'Modifier mon compte',
   fulFilled: true,
   breadcrumbs: [
     {
       title: 'Apps',
-      route: 'default-dashboard'
+      route: 'verticalMed/edit-account'
     },
     {
       title: 'Service Pages ',
-      route: 'default-dashboard'
+      route: 'verticalMed/edit-account'
     },
     {
       title: 'Edit Account'
@@ -61,87 +61,82 @@ const AccountForm = ({ user }) => {
 
   return (
     <Form layout='vertical'>
-      <FormItem label='First Name'>
+      <FormItem label='Prénom'>
         <Input
           name='name'
           onChange={handleChange}
-          placeholder='First Name'
+          placeholder='Prénom'
           defaultValue={values.name}
         />
       </FormItem>
 
-      <FormItem label='Last Name'>
+      <FormItem label='Nom'>
         <Input
           name='lastName'
           onChange={handleChange}
           defaultValue={values.lastName}
-          placeholder='Last Name'
+          placeholder='Nom'
         />
       </FormItem>
 
-      <FormItem label='Age'>
+      <FormItem label='Âge'>
         <Input
           type='number'
           name='age'
           onChange={handleChange}
           defaultValue={values.age}
-          placeholder='Age'
+          placeholder='Âge'
         />
       </FormItem>
 
-      <FormItem label='Gender'>
+      <FormItem label='Sexe'>
         <Select
           onChange={handleSelectChange('gender')}
           defaultValue={values.gender}
           placeholder='Gender'
         >
-          <Option value='male'>Male</Option>
-          <Option value='female'>Female</Option>
+          <Option value='male'>Masculin</Option>
+          <Option value='female'>Féminin</Option>
         </Select>
       </FormItem>
 
-      <FormItem label='Phone number'>
+      <FormItem label='Numéro'>
         <Input
           type='number'
           name='number'
           onChange={handleChange}
           defaultValue={values.number}
-          placeholder='Phone number'
+          placeholder='Numéro'
         />
       </FormItem>
 
-      <FormItem label='Address'>
+      <FormItem label='Adresse'>
         <Input.TextArea
           name='address'
           onChange={handleChange}
           rows={4}
           defaultValue={values.address}
-          placeholder='Address'
+          placeholder='Adresse'
         />
       </FormItem>
 
-      <FormItem label='Last visit'>
-        <Input defaultValue={values.lastVisit} placeholder='Last visit' readOnly />
-      </FormItem>
-
-      <FormItem label='Status'>
-        <Select
-          defaultValue={values.status}
-          placeholder='Status'
-          onChange={handleSelectChange('status')}
-        >
-          <Option value='approved'>Approved</Option>
-          <Option value='pending'>Pending</Option>
-        </Select>
+      <FormItem label='Spécialité'>
+        <Input.TextArea
+          name='Spécialité'
+          onChange={handleChange}
+          rows={4}
+          defaultValue={values.address}
+          placeholder='Spécialité'
+        />
       </FormItem>
 
       <div className='elem-list justify-content-between'>
         <Button disabled={!hasChanged} className='bg-color-success' onClick={() => handleSubmit()}>
-          <span className='text-color-500'>Save changes</span>
+          <span className='text-color-500'>Enregistrer</span>
         </Button>
 
         <Button ghost danger className='ml-auto'>
-          Delete account
+          Supprimer mon compte
         </Button>
       </div>
     </Form>
@@ -151,46 +146,46 @@ const AccountForm = ({ user }) => {
 const PasswordForm = () => {
   return (
     <Form layout='vertical'>
-      <FormItem label='Current password'>
-        <Input.Password placeholder='Current Password' />
+      <FormItem label='Mot de passe'>
+        <Input.Password placeholder='Mot de passe' />
       </FormItem>
 
       <div className='row'>
         <div className='col-md-6 col-sm-12'>
           <FormItem
             name='password'
-            label='New Password'
-            rules={[{ required: true, message: 'Please enter new password' }]}
+            label='Nouveau mot de passe'
+            rules={[{ required: true, message: 'Veillez entrer le nouveau mot de passe' }]}
           >
-            <Input.Password placeholder='New Password' />
+            <Input.Password placeholder='Nouveau mot de passe' />
           </FormItem>
         </div>
 
         <div className='col-md-6 col-sm-12'>
           <FormItem
             name='confirmPassword'
-            label='Confirm Password'
+            label='Confirmez le mot de passe'
             rules={[
               {
                 required: true,
-                message: 'Please confirm your password!'
+                message: 'Veillez confirmer le nouveau mot de passe !'
               },
               ({ getFieldValue }) => ({
                 validator(rule, value) {
                   if (!value || getFieldValue('password') === value) {
                     return Promise.resolve();
                   }
-                  return Promise.reject('The two passwords that you entered do not match!');
+                  return Promise.reject('Les deux mots de passe ne sont pas identiques !');
                 }
               })
             ]}
           >
-            <Input.Password placeholder='Confirm Password' />
+            <Input.Password placeholder='Confirmer le mot de passe' />
           </FormItem>
         </div>
       </div>
 
-      <Button type='primary'>Change password</Button>
+      <Button type='primary'>Changer le mot de passe</Button>
     </Form>
   );
 };

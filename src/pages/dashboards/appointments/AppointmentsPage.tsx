@@ -13,7 +13,7 @@ import { IAppointment } from '../../../interfaces/patient';
 import { IPageData } from '../../../interfaces/page';
 
 const pageData: IPageData = {
-  title: 'Appointments',
+  title: 'Liste des Stuctures',
   fulFilled: false,
   breadcrumbs: [
     {
@@ -29,7 +29,7 @@ const pageData: IPageData = {
 const AppointmentsPage = () => {
   usePageData(pageData);
   const [appointments, setAppointments] = useFetchPageData<IAppointment[]>(
-    './data/appointments.json',
+    './data/liste.json',
     []
   );
 

@@ -12,7 +12,6 @@ import LogoSvg from './../../assets/img/logo.svg';
 import Menu from '../components/menu/Menu';
 import Search from '../components/search/Search';
 import NavLoader from '../components/navbar/NavLoader';
-import AddPatient from '../components/patients/AddPatient';
 
 import Actions from '../components/actions/Actions';
 import { toggleSidebar } from '../../redux/settings/actions';
@@ -43,6 +42,7 @@ const VerticalLayout = ({ children }: Props) => {
   useEffect(() => {
     async function fetchMenuData() {
       const result = await axios('/data/menu.json');
+
       setMenuData(result.data);
     }
 
@@ -78,7 +78,7 @@ const VerticalLayout = ({ children }: Props) => {
       background={settings.sidebarBg}
       orientation='vertical'
     >
-      <Logo src={LogoSvg} />
+      <Logo src={LogoSvg}/>
 
       <Menu
         onCloseSidebar={onSidebarToggle}
@@ -86,23 +86,19 @@ const VerticalLayout = ({ children }: Props) => {
         orientation='vertical'
         data={menuData}
       />
-
-      <AddPatient />
+ 
+      <br></br>
 
       <Menu className='assistant-menu' orientation='vertical'>
-        <NavLink className='link' to='/vertical/settings' activeClassName='active' replace>
+        <NavLink
+          to='/vertical/settings'
+          className={`link ${({ isActive }) => (isActive ? 'active' : 'inactive')}`}
+          replace
+        >
           <span className='link-icon icofont icofont-ui-settings' />
 
-          <span className='link-text'>Settings</span>
+          <span className='link-text'>Reglage</span>
         </NavLink>
-
-        <NavLink className='link' to='/vertical/default-dashboard' activeClassName='active' replace>
-          <span className='link-icon icofont icofont-question-square' />
-
-          <span className='link-text'>FAQ & Support</span>
-        </NavLink>
-
-        {}
       </Menu>
 
       <NavLoader loaded={pageData.loaded} type={'nav-bar'} />

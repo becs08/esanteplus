@@ -14,11 +14,11 @@ type Props = {
 const AddAppointment = ({ visible, onClose, onSubmit }: Props) => {
   return (
     <Modal
-      visible={visible}
+      open={visible}
       onCancel={onClose}
       destroyOnClose
       footer={null}
-      title={<h3 className='title'>Add appointment</h3>}
+      title={<h3 className='title'>Ajouter un Rendez-vous</h3>}
     >
       <AppointmentForm onCancel={onClose} onSubmit={onSubmit} submitText='Add appointment' />
     </Modal>

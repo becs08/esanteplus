@@ -1,31 +1,28 @@
-import React from 'react';
-import { Button, Card, Form, Input, Select, Timeline } from 'antd';
-
+import { Button, Card, DatePicker, DatePickerProps, Form, Input, Select, Timeline } from 'antd';
 import { useFormik } from 'formik';
-
 import { IPageData } from '../../interfaces/page';
-
 import { usePageData } from '../../hooks/usePage';
 import { useGetPatient } from '../../hooks/useGetPatient';
 import { useGetBillings } from '../../hooks/useGetBillings';
-
-import ImageLoader from '../../layout/components/patients/ImageLoader';
+import { useState } from 'react';
+import dayjs from 'dayjs';
 import BillingTable from './components/BillingTable';
 
+
 const pageData: IPageData = {
-  title: 'Patient profile page',
+  title: 'Fiche Médicale',
   fulFilled: true,
   breadcrumbs: [
     {
-      title: 'Medicine',
-      route: 'default-dashboard'
+      title: 'Médecin',
+      route: 'verticalSec/doctor-profile'
     },
     {
       title: 'Doctors',
-      route: 'default-dashboard'
+      route: 'verticalSec/patient-profile'
     },
     {
-      title: 'Liam Jouns'
+      title: 'Oumar Ndiaye'
     }
   ]
 };
@@ -33,137 +30,123 @@ const pageData: IPageData = {
 const FormItem = Form.Item;
 const Option = Select.Option;
 
+const onDateChange: DatePickerProps['onChange'] = (date) => {
+    setFieldValue('date', date ? date.toISOString() : null);
+  };
+
+
 const ProfileForm = ({ patient }) => {
   const { values } = useFormik({
     initialValues: { ...patient },
     onSubmit: () => null
   });
 
+  const [type, setType] = useState('');
+
+  const handleTypeChange = (value) => {
+    setType(value);
+  };
+
+  
+
+  const today = dayjs();
+
+  
+};   
+
+const PatientTimeline = () => {
+  const timelineItems = [
+    {
+      color: 'red',
+      children: (
+        <div className='d-flex flex-column'>
+          <h4 className='m-0'>Profil</h4>
+          <br />
+          <span className='text-base'>
+           <div><strong>Nom:</strong> Ndiaye <strong>Prénom:</strong> Oumar Ngalla</div>
+           <div><strong>Sexe:</strong>Homme</div>
+           <div><strong>Date de Naissance:</strong> 15/07/2006 <strong>Lieu:</strong> Dakar</div>
+           <div><strong>Nationalité:</strong> Sénégalais </div>
+           <div><strong>Adresse:</strong> Yoff </div>
+           <div><strong>Etat Civil:</strong> Célibataire </div>
+           <div><strong>Numéro NIN :</strong> 560989999 </div>
+           <div><strong>Email:</strong> oumarngalla06@gmail.com </div>
+           <div><strong>Numéro de telephone:</strong> +221775678989 </div>
+          </span>
+        </div>
+      )
+    },
+    {
+      color: 'blue',
+      children: (
+        <div className='d-flex flex-column'>
+          <h4 className='m-0'>Informations Supplémentaires</h4>
+          <br />
+          <span className='text-base'>
+          <div><strong>Poids:</strong>65.0kg <strong>Taille:</strong>186.0cm </div>
+          <div><strong>Groupe Sanguin:</strong> O+ </div>
+          </span>
+        </div>
+      )
+    },
+    {
+      color: 'yellow',
+      children: (
+        <div className='d-flex flex-column'>
+          <h4 className='m-0'>Allergies</h4>
+          <br />
+          <span className='text-base'>
+            - Crustacés
+          </span>
+        </div>
+      )
+    },
+    {
+      color: 'pink',
+      children: (
+        <div className='d-flex flex-column'>
+          <h4 className='m-0'>Antécédents Médicaux</h4>
+          <br />
+          <span className='text-base'>
+          N/A
+          </span>
+        </div>
+      )
+    },
+    {
+      color: 'blue',
+      children: (
+        <div className='d-flex flex-column'>
+          <h4 className='m-0'>Antécédents Familiaux</h4>
+          <br />
+          <span className='text-base'>N/A</span>
+        </div>
+      )
+    },
+    {
+      color: 'red',
+      children: (
+        <div className='d-flex flex-column'>
+          <h4 className='m-0'>Vaccins</h4>
+          <br />
+          <span className='text-base'>
+           - BCG (Bacille de Calmette et Guérin)
+           - ROR (Rougeole, Oreillons, Rubéole)
+           - HPV (Papillomavirus humain)
+          </span>
+        </div>
+      )
+    }
+  ];
+
   return (
-    <Form layout='vertical'>
-      <FormItem label='Full name'>
-        <Input defaultValue={values.fullName} placeholder='Full name' />
-      </FormItem>
-
-      <FormItem label='Id'>
-        <Input defaultValue={values.id} placeholder='Id' />
-      </FormItem>
-
-      <div className='row'>
-        <div className='col-md-6 col-sm-12'>
-          <FormItem label='Age'>
-            <Input defaultValue={values.age} placeholder='Age' />
-          </FormItem>
-        </div>
-        <div className='col-md-6 col-sm-12'>
-          <FormItem label='Gender'>
-            <Select defaultValue={values.gender} placeholder='Gender'>
-              <Option value='male'>Male</Option>
-              <Option value='female'>Female</Option>
-            </Select>
-          </FormItem>
-        </div>
-      </div>
-
-      <FormItem label='Phone'>
-        <Input defaultValue={values.phone} placeholder='Phone' />
-      </FormItem>
-
-      <FormItem label='Address'>
-        <Input.TextArea rows={4} defaultValue={values.address} placeholder='Address' />
-      </FormItem>
-
-      <FormItem label='Last visit'>
-        <Input defaultValue={values.lastVisit} placeholder='Last visit' readOnly />
-      </FormItem>
-
-      <FormItem label='Status'>
-        <Select defaultValue={values.status} placeholder='Status'>
-          <Option value='Approved'>Approved</Option>
-          <Option value='Pending'>Pending</Option>
-        </Select>
-      </FormItem>
-    </Form>
-  );
+    <Timeline items={timelineItems} />
+  )
 };
 
-const PatientTimeline = () => (
-  <Timeline mode='left'>
-    <Timeline.Item color='red'>
-      <div className='d-flex flex-column'>
-        <h4 className='m-0'>New prescription</h4>
-        <span className='text-base text-color-100'>Now</span>
-        <span className='text-base'>
-          Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula
-          ut id elit.
-        </span>
-      </div>
-    </Timeline.Item>
-
-    <Timeline.Item color='blue'>
-      <div className='d-flex flex-column'>
-        <h4 className='m-0'>Appointment</h4>
-        <span className='text-base text-color-100'>2m ago</span>
-        <span className='text-base'>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur nam nisi veniam.
-        </span>
-      </div>
-    </Timeline.Item>
-
-    <Timeline.Item color='yellow'>
-      <div className='d-flex flex-column'>
-        <h4 className='m-0'>Medication</h4>
-        <span className='text-base text-color-100'>2h ago</span>
-        <span className='text-base'>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur nam nisi veniam.
-        </span>
-      </div>
-    </Timeline.Item>
-
-    <Timeline.Item color='pink'>
-      <div className='d-flex flex-column'>
-        <h4 className='m-0'>Operation</h4>
-        <span className='text-base text-color-100'>15h ago</span>
-        <span className='text-base'>
-          Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula
-          ut id elit.
-        </span>
-      </div>
-    </Timeline.Item>
-
-    <Timeline.Item color='blue'>
-      <div className='d-flex flex-column'>
-        <h4 className='m-0'>New patient</h4>
-        <span className='text-base text-color-100'>Jul 10</span>
-        <span className='text-base'>Lorem ipsum dolor sit.</span>
-      </div>
-    </Timeline.Item>
-
-    <Timeline.Item color='red'>
-      <div className='d-flex flex-column'>
-        <h4 className='m-0'>Examination</h4>
-        <span className='text-base text-color-100'>Jul 11</span>
-        <span className='text-base'>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur nam nisi veniam.
-        </span>
-      </div>
-    </Timeline.Item>
-
-    <Timeline.Item color='green'>
-      <div className='d-flex flex-column'>
-        <h4 className='m-0'>Re-Examination</h4>
-        <span className='text-base text-color-100'>Jul 25</span>
-        <span className='text-base'>
-          Aenean lacinia bibendum nulla sed consectetur. Nullam id dolor id nibh ultricies vehicula
-          ut id elit.
-        </span>
-      </div>
-    </Timeline.Item>
-  </Timeline>
-);
-
 const PatientProfilePage = () => {
-  const { patient } = useGetPatient('Liam');
+  const { patient } = useGetPatient('Ndiaye');
+
   const billings = useGetBillings();
 
   usePageData(pageData);
@@ -173,14 +156,12 @@ const PatientProfilePage = () => {
       <>
         <div className='row mb-4'>
           <div className='col-md-6 col-sm-12'>
-            <div className='header mb-3'>
-              <h6 className='mt-0 mb-3'>Photo</h6>
-              <ImageLoader src={patient.profileImg as string} size={100} />
-            </div>
 
             <div className='info stack'>
-              <ProfileForm patient={patient} />
-              <Button type='primary'>Save Changes</Button>
+              
+              <Card title='Historique' className='mb-0'>
+                <BillingTable billings={billings} />
+              </Card>
             </div>
           </div>
 
@@ -190,13 +171,13 @@ const PatientProfilePage = () => {
             </Card>
           </div>
         </div>
-
-        <Card title='Billings' className='mb-0'>
-          <BillingTable billings={billings} />
-        </Card>
       </>
     )
   );
 };
 
 export default PatientProfilePage;
+function setFieldValue(arg0: string, arg1: string) {
+   
+}
+

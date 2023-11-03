@@ -14,16 +14,16 @@ const headerOptions = {
 };
 
 const pageData: IPageData = {
-  title: 'Events calendar',
+  title: 'Mon Planning',
   fulFilled: true,
   breadcrumbs: [
     {
       title: 'Apps',
-      route: 'default-dashboard'
+      route: 'verticalMed/events-calendar'
     },
     {
       title: 'Service pages',
-      route: 'default-dashboard'
+      route: 'verticalMed/events-calendar'
     },
     {
       title: 'Events calendar'
@@ -47,7 +47,7 @@ const EventsCalendarPage = () => {
 
   const events = [
     {
-      title: 'Appointment',
+      title: 'Rendez-vous',
       color: '#e9e165',
       classNames: ['event-error'],
       start: setDate(0, 2),
@@ -56,7 +56,7 @@ const EventsCalendarPage = () => {
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
     },
     {
-      title: 'Appointment',
+      title: 'Rendez-vous',
       color: '#f56565',
       start: setDate(1, -1),
       end: setDate(1, 3),
@@ -64,7 +64,7 @@ const EventsCalendarPage = () => {
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
     },
     {
-      title: 'Appointment',
+      title: 'Rendez-vous',
       color: '#4299e1',
       start: setDate(1),
       classNames: ['event-pink'],
@@ -73,7 +73,7 @@ const EventsCalendarPage = () => {
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
     },
     {
-      title: 'Appointment',
+      title: 'Rendez-vous',
       color: '#ed5564',
       classNames: ['event-orange'],
       start: setDate(1, -3),
@@ -82,7 +82,7 @@ const EventsCalendarPage = () => {
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
     },
     {
-      title: 'Appointment',
+      title: 'Rendez-vous',
       color: '#e9e165',
       start: setDate(3, -5),
       end: setDate(4),
@@ -90,7 +90,7 @@ const EventsCalendarPage = () => {
         'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.'
     },
     {
-      title: 'Appointment',
+      title: 'Rendez-vous',
       color: '#e9e165',
       classNames: ['event-green'],
       start: setDate(5, 10),
@@ -113,14 +113,14 @@ const EventsCalendarPage = () => {
     modalBody = (
       <div className='d-flex flex-column'>
         <div className='event-time flex-column mb-4'>
-          <h5 className='event-title m-0'>Event time</h5>
+          <h5 className='event-title m-0'>Heure</h5>
           <span>
             From: {event.start.toDateString()} - to: {event.end.toDateString()}
           </span>
         </div>
 
         <div className='event-desc flex-column'>
-          <h5 className='event-title m-0'>Event description</h5>
+          <h5 className='event-title m-0'>Description</h5>
           <span>{event.extendedProps.desc}</span>
         </div>
       </div>
@@ -139,7 +139,7 @@ const EventsCalendarPage = () => {
         <Button onClick={closeModal} danger>
           Close
         </Button>
-        <Button type='primary'>Change event</Button>
+        <Button type='primary'>Modifer l'évènement</Button>
       </div>
     );
   }
@@ -161,7 +161,7 @@ const EventsCalendarPage = () => {
       <Modal
         title={modalTitle}
         footer={modalFooter}
-        visible={modalVisibility}
+        open={modalVisibility}
         onCancel={closeModal}
       >
         {modalBody}

@@ -1,17 +1,14 @@
-import React from 'react';
-
+import { Link, useNavigate } from 'react-router-dom';
 import { Button, Form, Input, Switch } from 'antd';
-
-import PublicLayout from '../../layout/public/Public';
-import { Link } from 'react-router-dom';
 import { useForm } from 'antd/es/form/Form';
-import { useNavigateHome } from '../../utils/use-navigate-home';
-
-const { Item } = Form;
+import PublicLayout from '../../layout/public/Public';
+import React, { useCallback, useState } from 'react';
 
 const SignUp = () => {
   const navigateHome = useNavigateHome();
   const [form] = useForm();
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
 
   const signUp = () => {
     form
@@ -20,17 +17,23 @@ const SignUp = () => {
       .catch(() => null);
   };
 
+  function useNavigateHome() {
+    const navigate = useNavigate();
+  
+    return useCallback(() => navigate('/'), []);
+  }
+
   return (
     <PublicLayout bgImg={`${window.origin}/content/register-page.jpg`}>
       <h4 className='mt-0 mb-1'>Sign up</h4>
       <p className='text-color-200'>Create your Account</p>
 
       <Form form={form} layout='vertical' className='mb-5'>
-        <Item name='name' rules={[{ required: true, message: <></> }]}>
+        <Form.Item name='name' rules={[{ required: true, message: <></> }]}>
           <Input placeholder='Name' />
-        </Item>
+        </Form.Item>
 
-        <Item
+        <Form.Item
           name='email'
           rules={[
             { required: true, message: <></> },
@@ -38,11 +41,11 @@ const SignUp = () => {
           ]}
         >
           <Input placeholder='Email address' type='mail' />
-        </Item>
+        </Form.Item>
 
-        <Item name='password' rules={[{ required: true, message: <></> }]}>
+        <Form.Item name='password' rules={[{ required: true, message: <></> }]}>
           <Input placeholder='Password' type='password' />
-        </Item>
+        </Form.Item>
 
         <div className='d-flex align-items-center mb-4'>
           <Switch defaultChecked /> <span className='ml-2'>I agree to the Terms and Privacy.</span>
@@ -58,7 +61,7 @@ const SignUp = () => {
       </Form>
 
       <p>
-        Have an account? <Link to='sign-in'>Sign in!</Link>
+        Have an account? <Link to='../sign-in'>Sign in!</Link>
       </p>
     </PublicLayout>
   );

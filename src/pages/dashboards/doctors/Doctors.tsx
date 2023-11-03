@@ -14,7 +14,7 @@ import { IUser } from '../../../interfaces/user';
 import { IPageData } from '../../../interfaces/page';
 
 const pageData: IPageData = {
-  title: 'Doctors',
+  title: 'Médecins',
   fulFilled: false,
   breadcrumbs: [
     {
@@ -22,7 +22,7 @@ const pageData: IPageData = {
       route: 'default-dashboard'
     },
     {
-      title: 'Doctors'
+      title: 'Médecins'
     }
   ]
 };
@@ -54,7 +54,7 @@ const DoctorsPage = () => {
       <PageAction onClick={openModal} icon='icofont-contact-add' />
 
       <Modal
-        visible={addingDoctor}
+        open={addingDoctor}
         onCancel={closeModal}
         title={<h3 className='title'>Add doctor</h3>}
         destroyOnClose

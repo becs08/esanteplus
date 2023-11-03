@@ -1,31 +1,30 @@
 import React from 'react';
-import { Avatar, Dropdown, Menu } from 'antd';
 import { NavLink } from 'react-router-dom';
+import { Avatar, Dropdown } from 'antd';
 
 const accountItems = [
-  { text: 'Edit account', icon: 'icofont-ui-home', route: '/vertical/edit-account' },
-  { text: 'User profile', icon: 'icofont-ui-user', route: '/vertical/user-profile' },
-  { text: 'Calendar', icon: 'icofont-ui-calendar', route: '/vertical/events-calendar' },
-  { text: 'Settings', icon: 'icofont-ui-settings', route: '/vertical/settings' },
+  { text: 'Modifier mon compte', icon: 'icofont-ui-home', route: '/verticalMed/edit-account' },
+  { text: 'Mon profil', icon: 'icofont-ui-user', route: '/verticalMed/user-profile' },
+  { text: 'Calendrier', icon: 'icofont-ui-calendar', route: '/verticalMed/events-calendar' },
   { text: 'Log Out', icon: 'icofont-logout', route: '/public/sign-in' }
 ];
 
 const SettingsDropdown = () => {
-  const accountMenu = (
-    <Menu style={{ minWidth: '180px' }}>
+  const accountMenu = () => (
+    <ul className='actions-menu' style={{ minWidth: '180px' }}>
       {accountItems.map((item, index) => (
-        <Menu.Item className='action-item' key={index}>
+        <li className='action-item' key={index}>
           <NavLink className='d-flex w-100' to={item.route} replace>
             <span className={`icon mr-3 ${item.icon}`} />
             <span className='text'>{item.text}</span>
           </NavLink>
-        </Menu.Item>
+        </li>
       ))}
-    </Menu>
+    </ul>
   );
 
   return (
-    <Dropdown overlay={accountMenu} trigger={['click']} placement='bottomRight'>
+    <Dropdown dropdownRender={accountMenu} trigger={['click']} placement='bottomRight'>
       <div className='item'>
         <Avatar
           size={40}

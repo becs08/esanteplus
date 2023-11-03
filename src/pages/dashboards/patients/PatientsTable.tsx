@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { ColumnProps } from 'antd/es/table';
 import { Avatar, Table, Button, Modal, Tag } from 'antd';
@@ -35,14 +34,14 @@ const PatientsTable = ({
   onEditPatient = () => null,
   onDeletePatient = () => null
 }: Props) => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const [patient, setPatient] = useState(null);
   const [visibility, setVisibility] = useState(false);
 
   const closeModal = () => setVisibility(false);
 
-  const handleShowInfo = () => history.push('/vertical/patient-profile');
+  const handleShowInfo = () => navigate('/verticalSec/patient-profile');
   const handleDeletePatient = (id) => onDeletePatient(id);
   const handleEditPatient = (patient: IPatient) => {
     setPatient(patient);
@@ -73,7 +72,7 @@ const PatientsTable = ({
     {
       key: 'name',
       dataIndex: 'name',
-      title: 'Name',
+      title: 'Nom',
       sorter: (a, b) => (a.name > b.name ? 1 : -1),
       render: (name) => <strong>{name}</strong>
     },
@@ -91,7 +90,7 @@ const PatientsTable = ({
     {
       key: 'age',
       dataIndex: 'age',
-      title: 'Age',
+      title: 'Âge',
       sorter: (a, b) => a.age - b.age,
       render: (age) => (
         <span className='nowrap' style={{ color: '#a5a5a5' }}>
@@ -102,13 +101,13 @@ const PatientsTable = ({
     {
       key: 'address',
       dataIndex: 'address',
-      title: 'Address',
+      title: 'Adresse',
       render: (address) => <span style={{ minWidth: 200, display: 'block' }}>{address}</span>
     },
     {
       key: 'number',
       dataIndex: 'number',
-      title: 'Number',
+      title: 'Numero',
       render: (phone) => (
         <span className='d-flex align-baseline nowrap' style={{ color: '#336cfb' }}>
           <span className='icofont icofont-ui-cell-phone mr-1' style={{ fontSize: 16 }} />
@@ -119,17 +118,17 @@ const PatientsTable = ({
     {
       key: 'visit',
       dataIndex: 'lastVisit',
-      title: 'Last visit',
+      title: 'Dernière visite',
       render: (visit) => (
         <span className='nowrap' style={{ color: '#a5a5a5' }}>
-          {visit}
+          {visit.split('T')[0]}
         </span>
       )
     },
     {
       key: 'status',
       dataIndex: 'status',
-      title: 'Status',
+      title: 'Statut',
       render: (status) => (
         <Tag style={{ borderRadius: 20 }} color={status === 'Approved' ? '#b7ce63' : '#cec759'}>
           {status}
@@ -157,10 +156,10 @@ const PatientsTable = ({
       />
 
       <Modal
-        visible={visibility}
+        open={visibility}
         footer={null}
         onCancel={closeModal}
-        title={<h3 className='title'>Add patient</h3>}
+        title={<h3 className='title'>Ajouter un patient</h3>}
       >
         <PatientForm
           submitText='Update patient'
